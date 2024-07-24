@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class RoomTest {
+public class ReservationTest {
     public static void main(String[] args) {
         double basePrice = 500;
         ArrayList<Double> priceRate = new ArrayList<Double>();
@@ -38,5 +38,28 @@ public class RoomTest {
 
         for (Room room : roomList)
             System.out.println(room.getName() + " : " + room.getPrice(1));
+
+        System.out.println();
+        ArrayList<Double> priceBreakdown = new ArrayList<Double>();
+        ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
+        Reservation reservation1 = new Reservation("Guest1", 1, 5, sRoom);
+        Reservation reservation2 = new Reservation("GUEST2", 6, 10, sRoom, "I_WORK_HERE");
+        Reservation reservation3 = new Reservation("Guest3", 6, 11, dRoom, "STAY4_GET1");
+        Reservation reservation4 = new Reservation("Guest4", 15, 16, eRoom, "PAYDAY");
+
+        reservationList.add(reservation1);
+        reservationList.add(reservation2);
+        reservationList.add(reservation3);
+        reservationList.add(reservation4);
+
+        for (Reservation reservation : reservationList) {
+            System.out.println(reservation.getGuestName());
+            priceBreakdown = reservation.getPriceBreakdown();
+            for (Double price : priceBreakdown)
+                System.out.println(price);
+            System.out.println(reservation.getTotalPrice());
+            System.out.println();
+        }
     }
 }
+
