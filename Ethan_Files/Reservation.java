@@ -51,6 +51,7 @@ public class Reservation {
     
     /**
      * Creates a new reservation object for the given guest name, check-in and check-out dates, and room to be reserved.
+     * Pre-condition: room is available with the given dates.
      * 
      * @param guestName the name of the guest under the reservation object.
      * @param checkInDate the starting date to be considered under the reservation object.
@@ -82,7 +83,7 @@ public class Reservation {
 
     /**
      * Creates a new reservation object for the given guest name, check-in and check-out dates, room to be reserved, and discount code to be applied.
-     * Pre-condition: discount code to be applied is applicable.
+     * Pre-condition: room is available with the given dates and discount code to be applied is applicable.
      * 
      * @param guestName the name of the guest under the reservation object.
      * @param checkInDate the starting date to be considered under the reservation object.

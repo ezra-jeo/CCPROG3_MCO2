@@ -48,6 +48,8 @@ public abstract class Room {
     /**
      * Initializes a new room object with the given name, base price, and price rates, 
      * and sets its availability to true across the entire month.
+     * Pre-condition: name is unique from the other rooms in the system, and base price
+     *                and price rates are within the valid values.
      * 
      * @param name the name of the room.
      * @param basePrice the base price of the room.
@@ -140,7 +142,7 @@ public abstract class Room {
      * Sets the price rates of the room with the given list of price rates.
      * Pre-condition: price rate values are within the range of 0.50 to 1.50.
      * 
-     * @param priceRate
+     * @param priceRate the new list of price rates for the room.
      */
     public void setPriceRate(ArrayList<Double> priceRate) {
         this.priceRate = priceRate;
