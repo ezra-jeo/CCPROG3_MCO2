@@ -5,7 +5,7 @@ import java.util.ArrayList;
  * entity in the hotel reservation system.
  */
 public class StandardRoom extends Room {
-    public static final String roomType = "Standard";
+
     /**
      * Creates a new standard room object with the given name, base price, and price rates.
      * 

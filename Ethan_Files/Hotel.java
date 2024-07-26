@@ -190,6 +190,41 @@ public class Hotel {
     }
 
     /**
+     * Searches and gets the index of an available room for the specified type with the given date values.
+     * Pre-condition: check-in and check-out date values are valid.
+     * 
+     * @param roomType the room type of the available room to look for.
+     * @param checkInDate the starting date for the possible reservation.
+     * @param checkOutDate the ending date for the possible reservation.
+     * @return the index of the available room and -1 if there is no available room.
+     */
+    public int getAvailableRoomType(String roomType, int checkInDate, int checkOutDate) {
+        Room room;
+        boolean available = false;
+        int i =  0;
+
+        while (i < this.roomList.size() && !available) {
+            room = this.roomList.get(i);
+
+            if (checkAvailability(room, checkInDate, checkOutDate)) {
+                if (roomType.equalsIgnoreCase("Standard") && room instanceof StandardRoom)
+                    available = true;
+                else if (roomType.equalsIgnoreCase("Deluxe") && room instanceof DeluxeRoom)
+                    available = true;
+                else if (roomType.equalsIgnoreCase("Executive") && room instanceof ExecutiveRoom)
+                    available = true;
+            }
+
+            i++;
+        }
+
+        if (available)
+            return --i;
+        else
+            return -1;
+    }
+
+    /**
      * Checks the availability of all the rooms in the hotel object within the entire month.
      * 
      * @return true if all the rooms are available and false otherwise.
@@ -224,7 +259,7 @@ public class Hotel {
 
         if (discountCode.equals("I_WORK_HERE"))
             applicable = true;
-        else if (discountCode.equals("STAY4_GET1") && checkOutDate - checkInDate >= 4)
+        else if (discountCode.equals("STAY4_GET1") && (checkOutDate - checkInDate) >= 4)
             applicable = true;
         else if (discountCode.equals("PAYDAY") && ((checkInDate <= 15 && 15 < checkOutDate) || (checkInDate <= 30 && 30 < checkOutDate)))
             applicable = true;
@@ -268,8 +303,8 @@ public class Hotel {
         int i = 0;
 
         while (i < roomIndexList.size() && valid) {
-            if (!(roomIndexList.get(i) >= 0 && roomIndexList.get(i) < this.roomList.size()))
-                    valid = false;
+            if (!(roomIndexList.get(i) >= 0 && roomIndexList.get(i) < this.roomList.size())) 
+                valid = false;
 
             i++;
         }
@@ -292,12 +327,14 @@ public class Hotel {
         boolean roomExists;
         int size = this.roomList.size();
         int roomNum = 1;
+        int ctr = 1;
         int i = 1, j = 0, k = 0;
+
+        sortRoomList();
 
         // Automatically creates rooms names based on the sequential room naming convention and immediately creates the concerned rooms based on the given amount.
         for (k = 0; k < 3; k++) {
             for (i = 1; i <= numRoomList.get(k); i++) {
-                sortRoomList();
                 roomExists = true;
 
                 while (j < size && roomExists) {
@@ -310,8 +347,9 @@ public class Hotel {
                 }
 
                 if (roomExists) {
-                    roomNumString = String.format("%02d", Integer.parseInt(this.roomList.get(this.roomList.size()-1).getName().substring(1,3)) + 1);
+                    roomNumString = String.format("%02d", Integer.parseInt(this.roomList.get(j-1).getName().substring(1,3)) + ctr);
                     roomName = this.name.substring(0,1) + roomNumString;
+                    ctr++;
                 }
                 else {
                     roomNumString = String.format("%02d", roomNum - 1);
@@ -353,41 +391,6 @@ public class Hotel {
             roomList.add(this.roomList.get(index)); // Adds the concerned rooms to a list.
 
         this.roomList.removeAll(roomList); // Using the list to removed the concerned rooms.
-    }
-
-    /**
-     * Searches and gets the index of an available room for the specified type with the given date values.
-     * Pre-condition: check-in and check-out date values are valid.
-     * 
-     * @param roomType the room type of the available room to look for.
-     * @param checkInDate the starting date for the possible reservation.
-     * @param checkOutDate the ending date for the possible reservation.
-     * @return the index of the available room and -1 if there is no available room.
-     */
-    public int getAvailableRoomType(String roomType, int checkInDate, int checkOutDate) {
-        Room room;
-        boolean available = false;
-        int i =  0;
-
-        while (i < this.roomList.size() && !available) {
-            room = this.roomList.get(i);
-
-            if (checkAvailability(room, checkInDate, checkOutDate)) {
-                if (roomType.equalsIgnoreCase("Standard") && room instanceof StandardRoom)
-                    available = true;
-                else if (roomType.equalsIgnoreCase("Deluxe") && room instanceof DeluxeRoom)
-                    available = true;
-                else if (roomType.equalsIgnoreCase("Execute") && room instanceof ExecutiveRoom)
-                    available = true;
-            }
-
-            i++;
-        }
-
-        if (available)
-            return --i;
-        else
-            return -1;
     }
 
     /**
@@ -531,21 +534,25 @@ public class Hotel {
         String roomInfo;
         ArrayList<Boolean> availability;
         boolean available = false;
-        int i;
+        int i = 0;
 
         roomInfo = "\nRoom Name : " + room.getName();
         roomInfo += "\n\nPrice per Night : ";
 
-        for (i = Room.MIN_DATE; i < Room.MAX_DATE; i++)
-            roomInfo += "\nDay " + i + " to " + (i + 1) + " -> " + room.getPrice(i);
+        for (i = Room.MIN_DATE; i < Room.MAX_DATE; i++) {
+            roomInfo += "\nDay ";
+            roomInfo += String.format("%-2d", i) + " to ";
+            roomInfo += String.format("%-2d", i+1) + " -> " + room.getPrice(i);
+        }
         
         roomInfo += "\n\nAvailability : ";
 
         availability = room.getAvailability();
-            
+
+        i = 0;
         // Checks if there is an available date.
         while (i < availability.size() && !available) {
-            if (availability.get(index) == true)
+            if (availability.get(i))
                 available = true;
 
             i++;
@@ -594,7 +601,9 @@ public class Hotel {
         reservationInfo += "\n\nPrice Breakdown : ";
 
         for (i = reservation.getCheckInDate(); i < reservation.getCheckOutDate(); i++) {
-            reservationInfo = "\nDay " + i + " to " + (i + 1) + " -> " + priceBreakdown.get(ctr);
+            reservationInfo += "\nDay ";
+            reservationInfo += String.format("%-2d", i) +  " to ";
+            reservationInfo += String.format("%-2d", i+1) + " -> " + priceBreakdown.get(ctr);
             ctr++;
         }
 
