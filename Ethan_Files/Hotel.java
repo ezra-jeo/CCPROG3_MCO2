@@ -535,17 +535,18 @@ public class Hotel {
         ArrayList<Boolean> availability;
         boolean available = false;
         int i = 0;
+        int ctr = 0;
 
-        roomInfo = "\nRoom Name : " + room.getName();
-        roomInfo += "\n\nPrice per Night : ";
+        roomInfo = "\nHotel Room Name    : " + room.getName();
+        roomInfo += "\n\n+----+ Price Per Night +----+";
 
         for (i = Room.MIN_DATE; i < Room.MAX_DATE; i++) {
             roomInfo += "\nDay ";
-            roomInfo += String.format("%-2d", i) + " to ";
-            roomInfo += String.format("%-2d", i+1) + " -> " + room.getPrice(i);
+            roomInfo += String.format("%-2d", i) + " -- to -- ";
+            roomInfo += String.format("%-2d", i+1) + " : " + String.format("%.2f", room.getPrice(i));
         }
-        
-        roomInfo += "\n\nAvailability : ";
+
+        roomInfo += "\n\n+----+ Available Day/s +----+\n";
 
         availability = room.getAvailability();
 
@@ -561,8 +562,16 @@ public class Hotel {
         if (available) {
             // Loops through the list of availability of the room and stores the available dates.
             for (i = 0; i < availability.size(); i++) {
-                if (availability.get(i))
-                    roomInfo += (i+1) + ", ";
+                if (availability.get(i)) {
+                    roomInfo += String.format("%-2d", (i+1)) + " * ";
+                    ctr++;
+
+                    if (ctr == 6) {
+                        roomInfo += "\n";
+                        ctr = 0;
+                    }
+
+                }
             }
 
             roomInfo += "\b\b ";
@@ -587,27 +596,29 @@ public class Hotel {
         int i;
         int ctr = 0;
 
-        reservationInfo = "\nGuest Information : " + reservation.getGuestName();
-        reservationInfo += "\nRoom Name : " + reservation.getRoom().getName();
-        reservationInfo += "\nCheck-In Date : " + reservation.getCheckInDate();
-        reservationInfo += "\nCheck-Out Date : " + reservation.getCheckOutDate();
-        reservationInfo += "\nDiscount Code : ";
+        reservationInfo = "\nGuest Information  : " + reservation.getGuestName();
+        reservationInfo += "\nHotel Room Name    : " + reservation.getRoom().getName();
+        reservationInfo += "\nCheck-In Date      : " + reservation.getCheckInDate();
+        reservationInfo += "\nCheck-Out Date     : " + reservation.getCheckOutDate();
+        reservationInfo += "\nDiscount Code      : ";
 
         if (reservation.getDiscountCode() == null)
             reservationInfo += "N/A";
         else
             reservationInfo += reservation.getDiscountCode();
 
-        reservationInfo += "\n\nPrice Breakdown : ";
+        reservationInfo += "\n\n+----+ Price Breakdown +----+";
 
         for (i = reservation.getCheckInDate(); i < reservation.getCheckOutDate(); i++) {
             reservationInfo += "\nDay ";
-            reservationInfo += String.format("%-2d", i) +  " to ";
-            reservationInfo += String.format("%-2d", i+1) + " -> " + priceBreakdown.get(ctr);
+            reservationInfo += String.format("%-2d", i) +  " -- to -- ";
+            reservationInfo += String.format("%-2d", i+1) + " : " + String.format("%.2f", priceBreakdown.get(ctr));
             ctr++;
         }
 
-        reservationInfo += "\n\nTotal Price : " + reservation.getTotalPrice();
+        reservationInfo += "\nDiscount Amount    : " + String.format("%.2f", reservation.getDiscountAmount());
+        reservationInfo += "\n- - - - - - - - - - - - - - -";
+        reservationInfo += "\nTotal Price Amount : " + String.format("%.2f", reservation.getTotalPrice());
 
         return reservationInfo;
     }

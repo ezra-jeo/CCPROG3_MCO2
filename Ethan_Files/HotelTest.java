@@ -47,7 +47,7 @@ public class HotelTest {
         for (Room room : roomList) 
             System.out.println(room.getName());
 
-        hotel.setRoomBasePrice(500);
+        hotel.setRoomBasePrice(1000);
 
         System.out.println();
         System.out.println("Standard - " + standardRoomList.get(0).getPrice(1));
@@ -250,6 +250,7 @@ public class HotelTest {
         System.out.println(hotel.getReservationInfo(4));
         System.out.println(hotel.getReservationInfo(5));
 
+        System.out.println(hotel.getRoomInfo(0));
 
 
 
