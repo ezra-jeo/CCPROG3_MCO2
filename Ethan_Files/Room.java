@@ -5,7 +5,7 @@ import java.util.ArrayList;
  * It has a name, which is unique to the hotel, a base price, which is the base cost per night, 
  * a list of availability, which represents its availability across the entire month, and a list of
  * price rates, which represents its price rates across the entire month, with respect to the minimum 
- * and maximum date reservation value.
+ * and maximum date reservation values.
  */
 public abstract class Room {
 
