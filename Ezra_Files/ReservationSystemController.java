@@ -2,12 +2,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import javax.swing.Action;
-import javax.swing.JCheckBox;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import java.util.ArrayList;
 
 public class ReservationSystemController {
@@ -17,11 +11,21 @@ public class ReservationSystemController {
     private ViewHotelExtension viewHotel;
     private ManageHotelExtension manageHotel; 
 
-    public ReservationSystemController() {
-        this.reservationSystem = new ReservationSystem();
-        this.view = new ReservationSystemView();
-        this.viewHotel = new ViewHotelExtension(); // View Hotel Extension
-        this.manageHotel = new ManageHotelExtension(); // Manage Hotel Extension
+    /**
+     * Constructor for the controller which calls various functions to add functionalities that bridges the view and the model classes.
+     * 
+     * @param reservationSystem instance of ReservationSystem that serves as the model which holds the data.
+     * @param view instance of ReservationSystemView that serves as the view which holds the UI elements.
+     * @param viewHotel extension of the viewHotel section in the view.
+     * @param manageHotel extension of the manageHotel section in the view.
+     * 
+     */
+
+    public ReservationSystemController(ReservationSystem reservationSystem, ReservationSystemView view, ViewHotelExtension viewHotel, ManageHotelExtension manageHotel) {
+        this.reservationSystem = reservationSystem;
+        this.view = view;
+        this.viewHotel = viewHotel; // View Hotel Extension
+        this.manageHotel = manageHotel; // Manage Hotel Extension
 
         /**
          * Adds an action listener to the create hotel button, running the process for hotel creation.
@@ -83,6 +87,10 @@ public class ReservationSystemController {
                     viewHotel.updateRoomOptions(hotel.getRoomList()); // Updates the room combobox in the view room functionality
                     viewHotel.updateReservationOptions(hotel.getReservationList()); // Updates the reservation combobox in the view reservation functionality
                 }
+                else {
+                    view.setHotelInfo(""); // Sets the high level information text area
+
+                }
            }
         });
 
@@ -97,11 +105,12 @@ public class ReservationSystemController {
                 int roomIndex = viewHotel.getRoomOptions().getSelectedIndex(); // Room index
 
                 if (hotelIndex != -1 && roomIndex != -1) {
-                    Hotel hotel = reservationSystem.getHotelList().get(view.getHotelOptions().getSelectedIndex()); // Hotel instance
+                    Hotel hotel = reservationSystem.getHotelList().get(hotelIndex); // Hotel instance
                     viewHotel.setRoomInfo(hotel.getRoomInfo(roomIndex)); // Sets the room information text area
-                    System.out.println(hotel.getRoomInfo(roomIndex));
-                    System.out.println(hotel.getRoomList().size());    
                 } 
+                else {
+                    viewHotel.setRoomInfo(""); // Sets the room information text area
+                }
             }   
         });
 
@@ -118,8 +127,9 @@ public class ReservationSystemController {
                 if (hotelIndex != -1 && reservationIndex != -1) {
                     Hotel hotel = reservationSystem.getHotelList().get(hotelIndex); // Hotel instance
                     viewHotel.setReservationInfo(hotel.getReservationInfo(reservationIndex)); // Sets the reservation information text area
-                    System.out.println(hotel.getReservationInfo(reservationIndex)); 
-                    System.out.println(hotel.getReservationList().size());    
+                }
+                else {
+                    viewHotel.setReservationInfo(""); // Sets the reservation information text area
                 }
 
             }
@@ -151,7 +161,6 @@ public class ReservationSystemController {
         /**
          * Adds an item listener to the date combobox in the show available and booked rooms section.
          * 
-         * 
          */
         viewHotel.setDateAvailableBookedListener(new ItemListener() {
             @Override
@@ -159,13 +168,17 @@ public class ReservationSystemController {
                 int dateIndex = viewHotel.getDateOptions().getSelectedIndex() + 1; // Date whose information to show
                 int hotelIndex = view.getHotelOptions().getSelectedIndex(); // Hotel index
                 
-                if (hotelIndex != -1 && dateIndex != -1)
+                if (hotelIndex != -1 && dateIndex != 0) {
                     viewHotel.setAvailableBooked(reservationSystem.viewHotelAvailableBooked(hotelIndex, dateIndex)); // Sets the available and booked rooms information text area
+                }
+                else {
+                    viewHotel.setAvailableBooked("");
+                }
             }
         });
 
          /**
-         * Adds an action listener to the manage hotel button, makes the view hotel extension window visible.
+         * Adds an action listener to the manage hotel button, makes the manage hotel extension window visible.
          * 
          */
         view.setManageHotelListener(new ActionListener() {
@@ -187,7 +200,7 @@ public class ReservationSystemController {
         });
 
          /**
-         * Adds an action listener to the manage hotel button, makes the view hotel extension window visible.
+         * Adds an action listener to the manage hotel button, runs the process for renaming hotel selections.
          * 
          */
         manageHotel.setRenameHotelListener(new ActionListener() {
@@ -275,20 +288,23 @@ public class ReservationSystemController {
             }
         });
 
+        /**
+         * Adds an action listener to the update base price button, changes the base price 
+         * and ensures that there is no reservations present.
+         * 
+         */
         manageHotel.setUpdateBasePriceListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Hotel hotel = reservationSystem.getHotelList().get(view.getManageOptions().getSelectedIndex());
-                    double newBasePrice = Double.parseDouble(manageHotel.getNewBasePrice().getText());
+                    Hotel hotel = reservationSystem.getHotelList().get(view.getManageOptions().getSelectedIndex()); // Hotel instance
+                    double newBasePrice = Double.parseDouble(manageHotel.getNewBasePrice().getText()); // New base price
 
                     if (hotel.getReservationList().size() == 0 && newBasePrice >= 100.0) {
-                        System.out.println(hotel.getRoomBasePrice());
 
                         if (manageHotel.setModConfirmFeedback("Update base price from \"" + hotel.getRoomBasePrice() + "\" to \"" + newBasePrice + "\"?") == 0) {
-                            hotel.setRoomBasePrice(newBasePrice);
-                            System.out.println(hotel.getRoomBasePrice());
-                            manageHotel.clearTextFields();
+                            hotel.setRoomBasePrice(newBasePrice); // Sets the base price for the hotel rooms
+                            manageHotel.clearTextFields(); // Clears the text fields
                         }
                     }
                     else if (newBasePrice < 100.0) {
@@ -304,20 +320,24 @@ public class ReservationSystemController {
             }
         });
 
+        /**
+         * Adds an action listener to the modify price rate button, changes the price rate of the specified date 
+         * and ensures that there is no reservations present for that date.
+         * 
+         */
+
         manageHotel.setModifyPriceRateListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Hotel hotel = reservationSystem.getHotelList().get(view.getManageOptions().getSelectedIndex());
-                    double newPriceRate = Double.parseDouble(manageHotel.getNewPriceRate().getText());
-                    int date = manageHotel.getDateOptions().getSelectedIndex() + 1;
-                    System.out.println(hotel.getRoomPriceRate().get(date-1));
+                    Hotel hotel = reservationSystem.getHotelList().get(view.getManageOptions().getSelectedIndex()); // Hotel instance
+                    double newPriceRate = Double.parseDouble(manageHotel.getNewPriceRate().getText()); // New price rate
+                    int date = manageHotel.getDateOptions().getSelectedIndex() + 1; // Date whose price rate will change
                     
                     if (hotel.checkDateAvailability(date) && newPriceRate >= 50 && newPriceRate <= 150) {
                         if (manageHotel.setModConfirmFeedback("Modify price rate for day " + date + " from \"" + hotel.getRoomPriceRate().get(date-1)*100 + "\" to \"" + newPriceRate +"\"?") == 0) {
-                            hotel.setRoomPriceRate(date, newPriceRate/100);
-                            manageHotel.clearTextFields();
-                            System.out.println(hotel.getRoomPriceRate().get(date-1));
+                            hotel.setRoomPriceRate(date, newPriceRate/100); // Sets the price rate
+                            manageHotel.clearTextFields(); // Clears the text fields
                         }
                     }
                     else if (newPriceRate < 50 || newPriceRate > 150) {
@@ -333,17 +353,21 @@ public class ReservationSystemController {
             }
         });
 
+        /**
+         * Adds an action listener to the remove reservation button, performs validity checking and removes the specified reservation.
+         * 
+         */
         manageHotel.setRemoveReservationListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Hotel hotel = reservationSystem.getHotelList().get(view.getManageOptions().getSelectedIndex());
-                int index = manageHotel.getRemoveReservationOptions().getSelectedIndex();
+                Hotel hotel = reservationSystem.getHotelList().get(view.getManageOptions().getSelectedIndex()); // Hotel instance
+                int index = manageHotel.getRemoveReservationOptions().getSelectedIndex(); // Reservation index
 
                 if (index != -1) {
                     if (manageHotel.setModConfirmFeedback("Remove Reservation for Room \"" + hotel.getReservationList().get(index).getRoom().getName() + "\"?") == 0) {
-                        hotel.removeReservation(index);
-                        manageHotel.removeReservationOptionComboBox(index);
-                        viewHotel.removeReservationOption(index);
+                        hotel.removeReservation(index); // Removes the reservation
+                        manageHotel.removeReservationOptionComboBox(index); // removes the option for the combobox
+                        viewHotel.removeReservationOption(index);  // removes the option for the combobox
                     }
                 }
                 else {
@@ -352,63 +376,77 @@ public class ReservationSystemController {
             }
         });
 
+        /**
+         * Adds an action listener to the remove hotel button, performs validity checking and removes the hotel.
+         * 
+         */
         manageHotel.setRemoveHotelListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int hotelIndex = view.getManageOptions().getSelectedIndex();
-                Hotel hotel = reservationSystem.getHotelList().get(hotelIndex);
+                int hotelIndex = view.getManageOptions().getSelectedIndex(); // Hotel index
+                Hotel hotel = reservationSystem.getHotelList().get(hotelIndex); // Hotel instance
 
                 if (manageHotel.setModConfirmFeedback("Remove Hotel \"" + hotel.getName() + "\"?") == 0) {
-                    reservationSystem.removeHotel(view.getManageOptions().getSelectedIndex());
-                    view.updateHotelOptions(reservationSystem.getHotelList());
-                    manageHotel.getMainFrame().dispose();
+                    reservationSystem.removeHotel(view.getManageOptions().getSelectedIndex()); // Removes the hotel
+                    view.updateHotelOptions(reservationSystem.getHotelList()); // Updates the hotel options in the view section
+                    manageHotel.getMainFrame().dispose(); // Closes the manage hotel extension window
                 }
             }
         });
 
+        /**
+         * Adds an action listener to the remove hotel button, performs validity checking and removes the hotel.
+         * 
+         */
+
         view.setSimulateBookingListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int hotelIndex = view.getSimulateHotelOptions().getSelectedIndex();
-                int dateIn = view.getSimulateDateInOptions().getSelectedIndex() + 1;
-                int dateOut = view.getSimulateDateOutOptions().getSelectedIndex() + 1;
-                String guestName = view.getGuestName().getText();
-                String roomType = (String) view.getSimulateRoomOptions().getSelectedItem();
-                String discountCode = view.getDiscountCode().getText();
+                int hotelIndex = view.getSimulateHotelOptions().getSelectedIndex(); // Hotel index
+                int dateIn = view.getSimulateDateInOptions().getSelectedIndex() + 1; // Check in date
+                int dateOut = view.getSimulateDateOutOptions().getSelectedIndex() + 1; // Check out date
+                String guestName = view.getGuestName().getText(); // Guest name 
+                String roomType = (String) view.getSimulateRoomOptions().getSelectedItem(); // Type of room to reserve
+                String discountCode = view.getDiscountCode().getText(); // Discount code, if any
 
 
                 if (hotelIndex != -1 && dateIn != -1 && dateOut != -1 && !guestName.equals("") && dateIn < dateOut) {
-                    Hotel hotel = reservationSystem.getHotelList().get(hotelIndex);
-                    int roomIndex = hotel.getAvailableRoomType(roomType, dateIn, dateOut);
+                    Hotel hotel = reservationSystem.getHotelList().get(hotelIndex); // Hotel instance
+                    int roomIndex = hotel.getAvailableRoomType(roomType, dateIn, dateOut); // room index, auto generated
 
                     if (roomIndex != -1) {
+                        // Two case of add reservation, with and without discount code
                         if (!discountCode.equals("") && hotel.checkDiscountApplicable(discountCode, dateIn, dateOut)) {
                             if (view.setModConfirmFeedback("Confirm Reservation for \"" + guestName + "\" in room \"" + hotel.getRoomList().get(roomIndex).getName() + 
                             "\" from " + dateIn + " to " + dateOut + "?") == 0) {
-                                hotel.addReservation(guestName, dateIn, dateOut, roomIndex, discountCode);
-                                viewHotel.updateReservationOptions(hotel.getReservationList());
-                                manageHotel.updateRemoveReservationOptions(hotel.getReservationList());
+                                hotel.addReservation(guestName, dateIn, dateOut, roomIndex, discountCode); // adds reservation
+                                viewHotel.updateReservationOptions(hotel.getReservationList()); // updates the reservation options for view hotel section
+                                manageHotel.updateRemoveReservationOptions(hotel.getReservationList()); // updates the reservation options for manage hotel section
                             }
                         }
                         else if (discountCode.equals("")) {
                             if (view.setModConfirmFeedback("Confirm Reservation for \"" + guestName + "\" in room \"" + hotel.getRoomList().get(roomIndex).getName() + 
                                 "\" from " + dateIn + " to " + dateOut + "?") == 0) {
-                                hotel.addReservation(guestName, dateIn, dateOut, roomIndex);
-                                viewHotel.updateReservationOptions(hotel.getReservationList());
-                                manageHotel.updateRemoveReservationOptions(hotel.getReservationList());
+                                hotel.addReservation(guestName, dateIn, dateOut, roomIndex);  // adds reservation
+                                viewHotel.updateReservationOptions(hotel.getReservationList()); // updates the reservation options for view hotel section
+                                manageHotel.updateRemoveReservationOptions(hotel.getReservationList()); // updates the reservation options for manage hotel section
 
                             }
                         }
                         else if (!hotel.checkDiscountApplicable(discountCode, dateIn, dateOut)) {
                             view.setErrorFeedback("Enter a valid discount code.");
                         } 
-                            
+            
                         view.clearTextFields();
-                        view.clearComboboxSelection();
+                        view.clearSimulateComboboxSelection();
+                        viewHotel.clearComboboxSelection();
                     }
                     else {
                         view.setErrorFeedback("No room is available for the specified date");
                     }
+                }
+                else if (hotelIndex == -1) {
+                    view.setErrorFeedback("Hotel list is empty.");
                 }
                 else if (guestName.equals("")) {
                     view.setErrorFeedback("Enter a valid guest name");
@@ -428,10 +466,4 @@ public class ReservationSystemController {
             }
         });
     }
-
-
-    public static void main(String[] args) {
-        new ReservationSystemController();
-    }
-    
 }

@@ -3,20 +3,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import javax.crypto.spec.DESKeySpec;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -26,11 +17,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.event.ChangeListener;
 
 
 public class ReservationSystemView {
+    /**
+     * GUI Elements
+     */
     private JFrame mainFrame;
     private JPanel createHotelPanel, viewHotelPanel, manageHotelPanel, simulateBookingPanel;
     private JPanel simulateBookingPane;
@@ -45,12 +37,14 @@ public class ReservationSystemView {
     private DefaultComboBoxModel<String> model4 = new DefaultComboBoxModel<>(roomTypes);
     private DefaultComboBoxModel<String> modelDateIn = new DefaultComboBoxModel<>(getDates30());
     private DefaultComboBoxModel<String> modelDateOut = new DefaultComboBoxModel<>(getDates31());
-
-
-
     private JTabbedPane menu;
 
+    /**
+     * Constructor for the view which formats the main window for the user interface
+     * 
+     */
     public ReservationSystemView() {
+        // Main frame formatting
         this.mainFrame = new JFrame("Hotel Reservation System");
         this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.mainFrame.setSize(470, 720);
@@ -58,25 +52,33 @@ public class ReservationSystemView {
         this.mainFrame.setLayout(new BorderLayout());
         this.mainFrame.setLocationRelativeTo(null);
 
-        this.simulateBookingPanel = new JPanel();
-
+        // Initializing each section of the tabbed pane
         initializeCreateHotel();
         initializeViewHotel();
         initializeManageHotel();
         initializeSimulateBooking();
 
+        // Adding tabs in the tabbed pane
         this.menu = new JTabbedPane();
         this.menu.addTab("Create Hotel", this.createHotelPanel);
         this.menu.addTab("View Hotel", this.viewHotelPanel);
         this.menu.addTab("Manage Hotel", this.manageHotelPanel);
         this.menu.addTab("Simulate Booking", this.simulateBookingPanel);
 
+        // Adding the tabbed pane to the main frame
         this.mainFrame.add(this.menu);
+
+        // Sets the main frame as visible
         this.mainFrame.setVisible(true);    
     }
 
+    /**
+     * Initializes the create hotel section 
+     * 
+     */
     public void initializeCreateHotel() {
-        this.createHotelPanel = new JPanel(new BorderLayout()); // Panel
+        // Main panel
+        this.createHotelPanel = new JPanel(new BorderLayout()); 
 
         // Header
         JLabel headerLabel = new JLabel("Create Hotel");
@@ -88,12 +90,12 @@ public class ReservationSystemView {
         headerLabel.setHorizontalTextPosition(SwingConstants.CENTER);
         header.setBackground(Color.darkGray);
         header.add(headerLabel);
-
         
-        // Pane
+        // Create hotel pane
         JPanel createHotelPane = new JPanel(new FlowLayout());
         createHotelPane.setPreferredSize(new Dimension(250, 250));
 
+        // Prompts for text fields
         JLabel hotelPrompt = new JLabel("Enter Hotel Name: ");
         JLabel standardPrompt = new JLabel("Enter Number of Standard Rooms: ");
         JLabel deluxePrompt = new JLabel("Enter Number of Deluxe Rooms: ");
@@ -104,6 +106,7 @@ public class ReservationSystemView {
         deluxePrompt.setPreferredSize(new Dimension(250, 100));
         executivePrompt.setPreferredSize(new Dimension(250, 100));
 
+        // Text fields
         this.hotelName = new JTextField();
         this.hotelName.setColumns(10);
         this.standardNum = new JTextField();
@@ -114,6 +117,7 @@ public class ReservationSystemView {
         this.executiveNum.setColumns(10);
         this.createHotel = new JButton("Create Hotel");
 
+        // Add to pane
         createHotelPane.add(hotelPrompt);
         createHotelPane.add(this.hotelName);
 
@@ -128,14 +132,20 @@ public class ReservationSystemView {
 
         createHotelPane.add(this.createHotel);
 
+        // Add header and pane to panel
         this.createHotelPanel.add(header, BorderLayout.NORTH);
         this.createHotelPanel.add(createHotelPane, BorderLayout.CENTER);
-
     }
-    
+
+    /**
+     * Initializes the view hotel section 
+     * 
+     */
     public void initializeViewHotel() {
+        // Main panel
         this.viewHotelPanel = new JPanel(new BorderLayout());
 
+        // Header
         JLabel headerLabel = new JLabel("View Hotel");
         JPanel header = new JPanel(new BorderLayout());
         headerLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -146,9 +156,11 @@ public class ReservationSystemView {
         header.setBackground(Color.darkGray);
         header.add(headerLabel);
 
+        // View hotel pane
         JPanel viewHotelPane = new JPanel(new BorderLayout());
         viewHotelPane.setPreferredSize(new Dimension(250, 50));
 
+        // Hotel options
         JLabel viewHotelTitle = new JLabel("List of Hotels:  ");
         viewHotelTitle.setHorizontalAlignment(JLabel.CENTER);
         this.hotelOptions = new JComboBox<>(model);
@@ -157,9 +169,11 @@ public class ReservationSystemView {
         viewHotelPane.add(viewHotelTitle, BorderLayout.NORTH);
         viewHotelPane.add(this.hotelOptions, BorderLayout.CENTER);
         
+        // Info pane for high level information and low level information
         JPanel infoPane = new JPanel();
         infoPane.setPreferredSize(new Dimension(500, 550));
 
+        // High level information pane
         JPanel hotelInfoHighPane = new JPanel(new BorderLayout());
         hotelInfoHighPane.setPreferredSize(new Dimension(250, 100));
         JLabel hotelInfoHighTitle = new JLabel("High Level Information: ");
@@ -169,25 +183,32 @@ public class ReservationSystemView {
         hotelInfoHighPane.add(hotelInfoHighTitle, BorderLayout.NORTH);
         hotelInfoHighPane.add(this.hotelInfo, BorderLayout.CENTER);
         
-        JPanel hotelInfoLowOptions = new JPanel(new FlowLayout());
-        hotelInfoLowOptions.setPreferredSize(new Dimension(250, 100));
+        // Low level information pane, holds the button for the view hotel extension
+        JPanel hotelInfoLowPane = new JPanel(new FlowLayout());
+        hotelInfoLowPane.setPreferredSize(new Dimension(250, 100));
         this.displayLowLevelInformation = new JButton("Low Level Information ");
         this.displayLowLevelInformation.setHorizontalAlignment(JLabel.CENTER);
-        hotelInfoLowOptions.add(this.displayLowLevelInformation);
+        hotelInfoLowPane.add(this.displayLowLevelInformation);
 
+        // Add to info pane
         infoPane.add(hotelInfoHighPane, BorderLayout.NORTH);
-        infoPane.add(hotelInfoLowOptions, BorderLayout.CENTER);
+        infoPane.add(hotelInfoLowPane, BorderLayout.CENTER);
 
-        // Delete
+        // Add all panes and header to main panel
         this.viewHotelPanel.add(header, BorderLayout.NORTH);
         this.viewHotelPanel.add(viewHotelPane, BorderLayout.CENTER);
         this.viewHotelPanel.add(infoPane, BorderLayout.SOUTH);
-
     }
 
+    /**
+     * Initializes the manage hotel section 
+     * 
+     */
     public void initializeManageHotel() {
+        // Main panel
         this.manageHotelPanel = new JPanel(new BorderLayout());
 
+        // Header
         JLabel headerLabel = new JLabel("Manage Hotel");
         JPanel header = new JPanel(new BorderLayout());
         headerLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -198,9 +219,11 @@ public class ReservationSystemView {
         header.setBackground(Color.darkGray);
         header.add(headerLabel);
         
+        // Manage hotel pane
         JPanel manageHotelPane = new JPanel(new BorderLayout());
         manageHotelPane.setPreferredSize(new Dimension(250, 50));
 
+        // Hotel options for manage hotel
         JLabel manageHotelTitle = new JLabel("List of Hotels:  ");
         manageHotelTitle.setHorizontalAlignment(JLabel.CENTER);
         this.manageOptions = new JComboBox<>(model2);
@@ -209,21 +232,29 @@ public class ReservationSystemView {
         manageHotelPane.add(manageHotelTitle, BorderLayout.NORTH);
         manageHotelPane.add(this.manageOptions, BorderLayout.CENTER);
 
+        // Button for manage hotel extension
         JPanel manageHotelCommandsPane = new JPanel(new FlowLayout());
         manageHotelCommandsPane.setPreferredSize(new Dimension(250, 550));
         this.manageHotelCommands = new JButton("Manage Hotel Commands");
         this.manageHotelCommands.setSize(50, 150);
         manageHotelCommandsPane.add(this.manageHotelCommands);
 
+        // Add panes to main panel
         this.manageHotelPanel.add(header, BorderLayout.NORTH);
         this.manageHotelPanel.add(manageHotelPane, BorderLayout.CENTER);
         this.manageHotelPanel.add(manageHotelCommandsPane, BorderLayout.SOUTH);
    }
 
+    /**
+     * Initializes the simulate booking section 
+     * 
+     */
     public void initializeSimulateBooking() {
+        // Main panel
         this.simulateBookingPanel = new JPanel(new BorderLayout());
         this.simulateBookingPanel.setPreferredSize(new Dimension(250, 50));
 
+        // Header
         JLabel headerLabel = new JLabel("Simulate Booking");
         JPanel header = new JPanel(new BorderLayout());
         headerLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -234,9 +265,11 @@ public class ReservationSystemView {
         header.setBackground(Color.darkGray);
         header.add(headerLabel);
 
+        // Simulate booking pane
         this.simulateBookingPane = new JPanel(new BorderLayout());
         this.simulateBookingPane.setPreferredSize(new Dimension(250, 550));
 
+        // Hotel options
         JPanel simulateBookingHotelOptionsPane = new JPanel(new BorderLayout());
         simulateBookingHotelOptionsPane.setPreferredSize(new Dimension(250,40));
         JLabel simulateBookingHotelTitle = new JLabel("List of Hotels:  ");
@@ -245,9 +278,11 @@ public class ReservationSystemView {
         this.simulateHotelOptions.setEditable(false);
         this.simulateHotelOptions.setSelectedIndex(-1);
 
+        // Add hotel options to simulate booking pane
         simulateBookingHotelOptionsPane.add(simulateBookingHotelTitle, BorderLayout.NORTH);
         simulateBookingHotelOptionsPane.add(this.simulateHotelOptions, BorderLayout.CENTER);
 
+        // Guest pane for name input
         JPanel simulateBookingGuestPane = new JPanel(new FlowLayout());
         simulateBookingGuestPane.setPreferredSize(new Dimension(250, 50));
         JLabel simulateBookingGuestPrompt = new JLabel("Enter the Guest Name: ");
@@ -257,20 +292,20 @@ public class ReservationSystemView {
         simulateBookingGuestPane.add(simulateBookingGuestPrompt);
         simulateBookingGuestPane.add(this.simulateGuestName);
 
+        // Date pane for the check in and check out date
         JPanel simulateBookingRoomDatePane = new JPanel(new BorderLayout());
         simulateBookingRoomDatePane.setPreferredSize(new Dimension(250,150));
 
+        // Room pane for room type selection
         JPanel simulateBookingRoomPane = new JPanel(new BorderLayout());
         simulateBookingRoomPane.setPreferredSize(new Dimension(250, 60));
-        JLabel simulateBookingRoomTitle = new JLabel("List of Rooms: ");
+        JLabel simulateBookingRoomTitle = new JLabel("List of Room Types: ");
         simulateBookingRoomTitle.setHorizontalAlignment(JLabel.CENTER);
         this.simulateRoomOptions = new JComboBox<>(model4);
         this.simulateRoomOptions.setEditable(false);
-        this.simulateRoomOptions.setSelectedIndex(-1);
-        
+        this.simulateRoomOptions.setSelectedItem(null);
         simulateBookingRoomPane.add(simulateBookingRoomTitle, BorderLayout.NORTH);
         simulateBookingRoomPane.add(this.simulateRoomOptions, BorderLayout.CENTER);
-
 
         JPanel simulateBookingDateInPane = new JPanel(new BorderLayout());
         simulateBookingDateInPane.setPreferredSize(new Dimension(250, 50));
@@ -278,8 +313,7 @@ public class ReservationSystemView {
         simulateBookingInDateTitle.setHorizontalAlignment(JLabel.CENTER);
         this.simulateDateInOptions = new JComboBox<>(modelDateIn);
         this.simulateDateInOptions.setEditable(false);
-        this.simulateDateInOptions.setSelectedIndex(-1);
-
+        this.simulateDateInOptions.setSelectedItem(null);
         simulateBookingDateInPane.add(simulateBookingInDateTitle, BorderLayout.NORTH);
         simulateBookingDateInPane.add(this.simulateDateInOptions, BorderLayout.CENTER);
 
@@ -289,16 +323,16 @@ public class ReservationSystemView {
         simulateBookingOutDateTitle.setHorizontalAlignment(JLabel.CENTER);
         this.simulateDateOutOptions = new JComboBox<>(modelDateOut);
         this.simulateDateOutOptions.setEditable(false);
-        this.simulateDateOutOptions.setSelectedIndex(-1);
-
+        this.simulateDateOutOptions.setSelectedItem(null);
         simulateBookingDateOutPane.add(simulateBookingOutDateTitle, BorderLayout.NORTH);
         simulateBookingDateOutPane.add(this.simulateDateOutOptions, BorderLayout.CENTER);
 
+        // Add to date pane both check in and check out dates
         simulateBookingRoomDatePane.add(simulateBookingRoomPane, BorderLayout.NORTH);
         simulateBookingRoomDatePane.add(simulateBookingDateInPane, BorderLayout.CENTER);
         simulateBookingRoomDatePane.add(simulateBookingDateOutPane, BorderLayout.SOUTH);
 
-
+        // Book reservation button and discount code inputs
         JPanel simulateBookingButton = new JPanel(new FlowLayout());
         simulateBookingButton.setPreferredSize(new Dimension(250, 320));
         JLabel discountPrompt = new JLabel("Enter a Discount Code: ");
@@ -314,12 +348,18 @@ public class ReservationSystemView {
         simulateBookingPane.add(simulateBookingRoomDatePane, BorderLayout.CENTER);
         simulateBookingPane.add(simulateBookingButton, BorderLayout.SOUTH);
 
+        // Add panes to main panel
         this.simulateBookingPanel.add(header, BorderLayout.NORTH);
         this.simulateBookingPanel.add(simulateBookingHotelOptionsPane, BorderLayout.CENTER);
         this.simulateBookingPanel.add(simulateBookingPane, BorderLayout.SOUTH);
 
     }
 
+    /**
+     * Creates an array of strings with values 1 to 30 for the dates
+     * 
+     * @return string array of dates 1 to 30
+     */
     public String[] getDates30() {
         String[] dates = new String[30];
         for (int j = 0; j < dates.length; j++) {
@@ -329,6 +369,11 @@ public class ReservationSystemView {
         return dates;
     }
     
+    /**
+     * Creates an array of strings with values 1 to 31 for the dates
+     * 
+     * @return string array of dates 1 to 31
+     */
     public String[] getDates31() {
         String[] dates = new String[31];
         for (int j = 0; j < dates.length; j++) {
@@ -338,10 +383,19 @@ public class ReservationSystemView {
         return dates;
     }
 
+    /**
+     * Sets the high level information of the hotel
+     * 
+     * @param message string to display in the text area
+     */
     public void setHotelInfo(String message) {
         this.hotelInfo.setText(message);
     }
 
+    /**
+     * Add options to each combobox in every section in the main window.
+     * 
+     */
     public void addHotelOption(String item) {
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) this.hotelOptions.getModel();
         DefaultComboBoxModel<String> model2 = (DefaultComboBoxModel<String>) this.manageOptions.getModel();
@@ -352,6 +406,10 @@ public class ReservationSystemView {
         model3.addElement(item);
     }
 
+    /**
+     * Updates the options of each combobox in every section in the main window.
+     * 
+     */
     public void updateHotelOptions(ArrayList<Hotel> items) {
         
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) this.hotelOptions.getModel();
@@ -367,50 +425,86 @@ public class ReservationSystemView {
             model2.addElement(hotel.getName());
             model3.addElement(hotel.getName());
         }
-
-        // this.hotelOptions.setSelectedIndex(-1);
-        // this.manageOptions.setSelectedIndex(-1);
-        // this.simulateHotelOptions.setSelectedIndex(-1);
-
     }
 
-    public void setMenuChangeListener(ChangeListener changeListener) {
-        this.menu.addChangeListener(changeListener);
-    }
-
+    /**
+     * Adds create hotel action listener
+     * 
+     * @param actionListener action listener instance
+     */
     public void setCreateHotelListener(ActionListener actionListener) {
         this.createHotel.addActionListener(actionListener);
     }
 
+    /**
+     * Adds view hotel item listener
+     * 
+     * @param itemListener item listener instance
+     */
     public void setViewHotelItemListener(ItemListener itemListener) {
         this.hotelOptions.addItemListener(itemListener);
     }
 
+    /**
+     * Adds view hotel action listener
+     * 
+     * @param actionListener action listener instance
+     */
     public void setViewHotelListener(ActionListener actionListener) {
         this.displayLowLevelInformation.addActionListener(actionListener);
     }
 
+    
+    /**
+     * Adds manage hotel action listener
+     * 
+     * @param actionListener action listener instance
+     */
     public void setManageHotelListener(ActionListener actionListener) {
         this.manageHotelCommands.addActionListener(actionListener);
     }
 
+    /**
+     * Adds manage hotel item listener
+     * 
+     * @param actionListener item listener instance
+     */
     public void setManageHotelItemListener(ItemListener itemListener) {
         this.manageOptions.addItemListener(itemListener);
     }
 
+    /**
+     * Adds simulate booking action listener
+     * 
+     * @param actionListener action listener instance
+     */
     public void setSimulateBookingListener(ActionListener actionListener) {
         this.simulateBooking.addActionListener(actionListener);
     }
 
-
+    /**
+     * Displays an error pop up dialog
+     * 
+     * @param error error message to display in the dialog
+     */
     public void setErrorFeedback(String error) {
         JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Displays an confirmatin pop up dialog
+     * 
+     * @param confirmation confirmation message to display in the dialog
+     * @return integer value equivalent of the user input
+     */
     public int setModConfirmFeedback(String confirmation) {
         return JOptionPane.showConfirmDialog(null, confirmation, "Proceed?", JOptionPane.YES_NO_OPTION);
     }
     
+    /**
+     * Clear text fields in every input
+     * 
+     */
     public void clearTextFields() {
         this.hotelName.setText("");
         this.standardNum.setText("");
@@ -420,6 +514,22 @@ public class ReservationSystemView {
         this.simulateDiscount.setText("");
     }
 
+        
+    /**
+     * Clear selections from the comboboxes of simulate booking section.
+     * 
+     */
+    public void clearSimulateComboboxSelection() {
+        this.simulateHotelOptions.setSelectedItem(null);
+        this.simulateRoomOptions.setSelectedItem(null);
+        this.simulateDateInOptions.setSelectedItem(null);
+        this.simulateDateOutOptions.setSelectedItem(null);
+    }
+        
+    /**
+     * Clear selections from the comboboxes of every section.
+     * 
+     */
     public void clearComboboxSelection() {
         this.hotelOptions.setSelectedItem(null);
         this.manageOptions.setSelectedItem(null);
@@ -431,50 +541,110 @@ public class ReservationSystemView {
 
     // Getters for Input Fields
 
+    /**
+     * Getter for hotel name text field
+     * 
+     * @return JTextField instance
+     */
     public JTextField getHotelName() {
         return this.hotelName;
     }
 
+    /**
+     * Getter for standard room number text field
+     * 
+     * @return JTextField instance
+     */
     public JTextField getStandardNum() {
         return this.standardNum;
     }
     
+    /**
+     * Getter for deluxe room number text field
+     * 
+     * @return JTextField instance
+     */
     public JTextField getDeluxeNum() {
         return this.deluxeNum;
     }
     
+     /**
+     * Getter for executive room number text field
+     * 
+     * @return JTextField instance
+     */
     public JTextField getExecutiveNum() {
         return this.executiveNum;
     }
 
+     /**
+     * Getter for guest name text field
+     * 
+     * @return JTextField instance
+     */
     public JTextField getGuestName() {
         return this.simulateGuestName;
     }
 
+    /**
+     * Getter for discount text field
+     * 
+     * @return JTextField instance
+     */
     public JTextField getDiscountCode() {
         return this.simulateDiscount;
     }
 
+    /**
+     * Getter for hotel options combobox for view hotel
+     * 
+     * @return JComboBox<String> instance
+     */
     public JComboBox<String> getHotelOptions() {
         return this.hotelOptions;
     }
 
+    /**
+     * Getter for hotel options combobox for manage hotel
+     * 
+     * @return JComboBox<String> instance
+     */
     public JComboBox<String> getManageOptions() {
         return this.manageOptions;
     }
 
+    /**
+     * Getter for hotel options combobox for simulate booking
+     * 
+     * @return JComboBox<String> instance
+     */
     public JComboBox<String> getSimulateHotelOptions() {
         return this.simulateHotelOptions;
     }
-
+    
+    /**
+     * Getter for room options combobox for simulate booking
+     * 
+     * @return JComboBox<String> instance
+     */
     public JComboBox<String> getSimulateRoomOptions() {
         return this.simulateRoomOptions;
     }
 
+    /**
+     * Getter for check in date options combobox for simulate booking
+     * 
+     * @return JComboBox<String> instance
+     */
     public JComboBox<String> getSimulateDateInOptions() {
         return this.simulateDateInOptions;
     }
 
+    /**
+     * Getter for check out date options combobox for simulate booking
+     * 
+     * @return JComboBox<String> instance
+     */
     public JComboBox<String> getSimulateDateOutOptions() {
         return this.simulateDateOutOptions;
     }

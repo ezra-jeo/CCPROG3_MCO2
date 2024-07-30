@@ -102,8 +102,7 @@ public abstract class Room {
      * @param letter the letter to use to replace the first character of the name of the room.
      */
     public void setName(char letter) {
-        this.name = this.name.replace(this.name.charAt(0), letter);
-        System.out.println(this.name);
+        this.name = this.name.replaceFirst(Character.toString(this.name.charAt(0)), Character.toString(letter));
     }
 
     /**

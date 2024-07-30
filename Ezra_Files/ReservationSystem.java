@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 /**
  * The ReservationSystem class represents the main reservation system in the hotel reservation system.
@@ -13,12 +11,6 @@ public class ReservationSystem {
      * 
      */
     private ArrayList<Hotel> hotelList;
-
-    /**
-     * Scanner instance which is used in all of the inputs in the reservation system.
-     * 
-     */
-    private Scanner sc = new Scanner(System.in);
 
     /**
      * Instantiates an instance of the ReservationSystem class.
@@ -106,7 +98,6 @@ public class ReservationSystem {
 
         return result;
         
-
     }
 
     /**

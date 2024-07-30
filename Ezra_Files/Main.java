@@ -1,5 +1,5 @@
 /**
- * The Main class creates, instantiates, and executes the entire hotel reservation system.
+ * The Main class creates, instantiates, and executes the model-view-controller architecture of the hotel reservation system.
  * 
  * @author Ethan Axl S. Burayag
  * @author Ezra Jeonadab G. Del Rosario
@@ -13,6 +13,10 @@ public class Main {
      */
     public static void main(String[] args) {
         ReservationSystem rs = new ReservationSystem();
-        //rs.runSystem();
+        ReservationSystemView view = new ReservationSystemView();
+        ViewHotelExtension viewHotel = new ViewHotelExtension();
+        ManageHotelExtension manageHotel = new ManageHotelExtension();
+        ReservationSystemController controller = new ReservationSystemController(rs, view, viewHotel, manageHotel);
+        
     }
 }

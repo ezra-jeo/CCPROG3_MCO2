@@ -323,12 +323,14 @@ public class Hotel {
         boolean roomExists;
         int size = this.roomList.size();
         int roomNum = 1;
+        int ctr = 1;
         int i = 1, j = 0, k = 0;
+
+        sortRoomList();
 
         // Automatically creates rooms names based on the sequential room naming convention and immediately creates the concerned rooms based on the given amount.
         for (k = 0; k < 3; k++) {
             for (i = 1; i <= numRoomList.get(k); i++) {
-                sortRoomList();
                 roomExists = true;
 
                 while (j < size && roomExists) {
@@ -341,8 +343,9 @@ public class Hotel {
                 }
 
                 if (roomExists) {
-                    roomNumString = String.format("%02d", Integer.parseInt(this.roomList.get(this.roomList.size()-1).getName().substring(1,3)) + 1);
+                    roomNumString = String.format("%02d", Integer.parseInt(this.roomList.get(j-1).getName().substring(1,3)) + ctr);
                     roomName = this.name.substring(0,1) + roomNumString;
+                    ctr++;
                 }
                 else {
                     roomNumString = String.format("%02d", roomNum - 1);
