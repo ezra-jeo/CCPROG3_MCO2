@@ -34,41 +34,49 @@ public class ReservationSystemController {
         view.setCreateHotelListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String hotelName = view.getHotelName().getText();
-                    int standardNum = Integer.parseInt(view.getStandardNum().getText());
-                    int deluxeNum = Integer.parseInt(view.getDeluxeNum().getText());
-                    int executiveNum = Integer.parseInt(view.getExecutiveNum().getText());
-                    int roomNum = standardNum + deluxeNum + executiveNum;
-                    ArrayList<Integer> roomTypeNum = new ArrayList<Integer>();
-                    
-                    // Adds room number per type to an arraylist
-                    roomTypeNum.add(standardNum);
-                    roomTypeNum.add(deluxeNum);
-                    roomTypeNum.add(executiveNum);
+                String hotelName = view.getHotelName().getText();
 
-                    if (!hotelName.equals("") && reservationSystem.isExisting(hotelName) == -1 && roomNum <= 50 && roomNum >= 1) { 
-                    
-                        if (view.setModConfirmFeedback("Add Hotel " + hotelName +"?") == 0) { // Confirmation Prompt
-                            reservationSystem.createHotel(hotelName, roomTypeNum);
-                            view.addHotelOption(hotelName);
-                            view.clearTextFields();
+                if (!hotelName.equals("")) {
+                    try {
+                        int standardNum = Integer.parseInt(view.getStandardNum().getText());
+                        int deluxeNum = Integer.parseInt(view.getDeluxeNum().getText());
+                        int executiveNum = Integer.parseInt(view.getExecutiveNum().getText());
+                        int roomNum = standardNum + deluxeNum + executiveNum;
+                        ArrayList<Integer> roomTypeNum = new ArrayList<Integer>();
+                        
+                        // Adds room number per type to an arraylist
+                        roomTypeNum.add(standardNum);
+                        roomTypeNum.add(deluxeNum);
+                        roomTypeNum.add(executiveNum);
+    
+                        if (reservationSystem.isExisting(hotelName) == -1 && roomNum <= 50 && roomNum >= 1) { 
+                        
+                            if (view.setModConfirmFeedback("Add Hotel \"" + hotelName +"\"?") == 0) { // Confirmation Prompt
+                                reservationSystem.createHotel(hotelName, roomTypeNum);
+                                view.addHotelOption(hotelName);
+                            }
+                        }
+    
+                        else if (roomNum > 50 || roomNum < 1){
+                            view.setErrorFeedback("Enter a valid room number."); 
+                        }
+                        else {
+                            view.setErrorFeedback("Hotel \"" + hotelName + "\" already exists."); 
                         }
                     }
-                    else if (hotelName.equals("")) {
-                        view.setErrorFeedback("Enter a valid hotel name."); 
-                    }
-                    else if (roomNum > 50 || roomNum < 1){
-                        view.setErrorFeedback("Enter a valid room number."); 
-                    }
-                    else {
-                        view.setErrorFeedback("Hotel " + hotelName + " already exists."); 
-                    }
+                    catch (NumberFormatException exception) {
+                        view.setErrorFeedback("Enter a valid integer input.");
+                    } 
                 }
-                catch (NumberFormatException exception) {
-                    view.setErrorFeedback("Enter a valid integer input.");
-                } 
+                else {
+                    view.setErrorFeedback("Enter a valid hotel name."); 
+                }
+
+                view.clearTextFields();
+
             }
+
+            
         });
 
         
@@ -217,11 +225,11 @@ public class ReservationSystemController {
                         view.updateHotelOptions(reservationSystem.getHotelList());
                     }
                 }
-                else if (!newName.equals("")) {
+                else if (newName.equals("")) {
                     manageHotel.setErrorFeedback("Enter a valid name.");
                 }
                 else {
-                    manageHotel.setErrorFeedback("Hotel " + newName + " already exists.");
+                    manageHotel.setErrorFeedback("Hotel \"" + newName + "\" already exists.");
                 }
             
             }
@@ -246,7 +254,7 @@ public class ReservationSystemController {
                     roomNums.add(deluxeNum);
                     roomNums.add(executiveNum);
 
-                    if (manageHotel.setModConfirmFeedback("Add these rooms to hotel " + hotel.getName() + "?") == 0 && roomNum <= 50) {
+                    if (manageHotel.setModConfirmFeedback("Add these rooms to Hotel \"" + hotel.getName() + "\"?") == 0 && roomNum <= 50) {
                         hotel.addRoom(roomNums); // Adds the room to the hotel's room list
                         manageHotel.updateRemoveRoomOptions(hotel.getRoomList()); // Updates room combobox in manage hotel section
                         viewHotel.updateRoomOptions(hotel.getRoomList()); // Updates room combobox in simulate booking section
@@ -280,7 +288,7 @@ public class ReservationSystemController {
                     }
                 }
                 else if (!hotel.checkRoomAvailability(roomIndex)) {
-                    manageHotel.setErrorFeedback("Hotel " + hotel.getName() + " has existing reservations for Room \"" +  hotel.getRoomList().get(roomIndex).getName() + "\".");
+                    manageHotel.setErrorFeedback("Hotel \"" + hotel.getName() + "\" has existing reservations for Room \"" +  hotel.getRoomList().get(roomIndex).getName() + "\".");
                 }
                 else {
                     manageHotel.setErrorFeedback("Hotels must have at least one (1) room.");
@@ -311,7 +319,7 @@ public class ReservationSystemController {
                         manageHotel.setErrorFeedback("New price needs to be above 100.0");
                     }
                     else {
-                        manageHotel.setErrorFeedback("Hotel " + hotel.getName() + " has existing reservations.");
+                        manageHotel.setErrorFeedback("Hotel \"" + hotel.getName() + "\" has existing reservations.");
                     }
                 }
                 catch (NumberFormatException exception) {
@@ -335,7 +343,7 @@ public class ReservationSystemController {
                     int date = manageHotel.getDateOptions().getSelectedIndex() + 1; // Date whose price rate will change
                     
                     if (hotel.checkDateAvailability(date) && newPriceRate >= 50 && newPriceRate <= 150) {
-                        if (manageHotel.setModConfirmFeedback("Modify price rate for day " + date + " from \"" + hotel.getRoomPriceRate().get(date-1)*100 + "\" to \"" + newPriceRate +"\"?") == 0) {
+                        if (manageHotel.setModConfirmFeedback("Modify price rate for day " + date + " from \"" + hotel.getRoomPriceRate().get(date-1)*100 + "%\" to \"" + newPriceRate +"%\"?") == 0) {
                             hotel.setRoomPriceRate(date, newPriceRate/100); // Sets the price rate
                             manageHotel.clearTextFields(); // Clears the text fields
                         }
@@ -344,7 +352,7 @@ public class ReservationSystemController {
                         manageHotel.setErrorFeedback("New price rate must be between 50% and 150%.");
                     }   
                     else {
-                        manageHotel.setErrorFeedback("Hotel " + hotel.getName() + " has existing reservations on " + date + ".");
+                        manageHotel.setErrorFeedback("Hotel \"" + hotel.getName() + "\" has existing reservations on " + date + ".");
                     }
                 }
                 catch (NumberFormatException exception) {
@@ -398,7 +406,6 @@ public class ReservationSystemController {
          * Adds an action listener to the remove hotel button, performs validity checking and removes the hotel.
          * 
          */
-
         view.setSimulateBookingListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

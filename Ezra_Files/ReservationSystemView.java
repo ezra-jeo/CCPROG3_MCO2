@@ -395,6 +395,7 @@ public class ReservationSystemView {
     /**
      * Add options to each combobox in every section in the main window.
      * 
+     * @param item 
      */
     public void addHotelOption(String item) {
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) this.hotelOptions.getModel();

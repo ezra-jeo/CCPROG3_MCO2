@@ -310,8 +310,8 @@ public class ViewHotelExtension {
             model.removeAllElements();
             for (Reservation reservation : items) {
                 result = reservation.getRoom().getName() + ": ";
-                result += "[In]: " + reservation.getCheckInDate() + " --> [Out]: " + reservation.getCheckOutDate() + " ";
-                result += "[Guest]: \"" + reservation.getGuestName() + "\"";
+                result += "In: " + reservation.getCheckInDate() + " --> Out: " + reservation.getCheckOutDate() + " ";
+                result += "Guest: \"" + reservation.getGuestName() + "\"";
                 model.addElement(result);
             }
             model.setSelectedItem(null);
