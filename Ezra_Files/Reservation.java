@@ -42,6 +42,12 @@ public class Reservation {
      * 
      */
     private ArrayList<Double> priceBreakdown;
+
+    /**
+     * The discount amount applied under the reservation object.
+     * 
+     */
+    private double discountAmount;
     
     /**
      * The total price under the reservation object.
@@ -68,6 +74,7 @@ public class Reservation {
         this.room = room;
         this.discountCode = null;
         this.priceBreakdown = new ArrayList<Double>();
+        this.discountAmount = 0;
         this.totalPrice = 0;
 
         // Reserves the room
@@ -101,6 +108,7 @@ public class Reservation {
         this.room = room;
         this.discountCode = discountCode;
         this.priceBreakdown = new ArrayList<Double>();
+        this.discountAmount = 0;
         this.totalPrice = 0;
 
         // Reserves the room
@@ -114,14 +122,18 @@ public class Reservation {
         }
 
         // Applies the discount
-        if (discountCode.equals("I_WORK_HERE"))
-            this.totalPrice = this.totalPrice * 0.90;
-        else if (discountCode.equals("STAY4_GET1")) {
-            this.priceBreakdown.set(0, 0.0);
-            this.totalPrice -= room.getPrice(checkInDate);
+        if (discountCode.equals("I_WORK_HERE")) {
+            this.discountAmount = this.totalPrice * 0.10;
+            this.totalPrice -= this.discountAmount;
         }
-        else if (discountCode.equals("PAYDAY"))
-            this.totalPrice = this.totalPrice * 0.93;
+        else if (discountCode.equals("STAY4_GET1")) {
+            this.discountAmount = this.priceBreakdown.get(0);
+            this.totalPrice -= this.discountAmount;
+        }
+        else if (discountCode.equals("PAYDAY")) {
+            this.discountAmount = this.totalPrice * 0.07;
+            this.totalPrice -= this.discountAmount;
+        }
     }
 
     /**
@@ -176,6 +188,15 @@ public class Reservation {
      */
     public ArrayList<Double> getPriceBreakdown() {
         return this.priceBreakdown;
+    }
+
+    /**
+     * Returns the discount amount for the whole reservation.
+     * 
+     * @return the discount amount for the reservation.
+     */
+    public double getDiscountAmount() {
+        return this.discountAmount;
     }
 
     /**
