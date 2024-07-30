@@ -51,11 +51,11 @@ public class ReservationSystem {
         String result = "";
         Hotel hotel = hotelList.get(index);
 
-        result += "Hotel : " + hotel.getName() + "\n";
-        result += "No. of Standard Rooms : " + hotel.getStandardRoomList().size() + "\n"; // Get Standard Room List TODO
-        result += "No. of Deluxe Rooms : " + hotel.getDeluxeRoomList().size() + "\n";
+        result += "Hotel Name                    : " + hotel.getName() + "\n";
+        result += "No. of Standard Rooms  : " + hotel.getStandardRoomList().size() + "\n"; // Get Standard Room List TODO
+        result += "No. of Deluxe Rooms     : " + hotel.getDeluxeRoomList().size() + "\n";
         result += "No. of Executive Rooms : " + hotel.getExecutiveRoomList().size() + "\n";
-        result += "Estimated Earnings : " + hotel.getEarnings() + "\n";
+        result += "Estimated Earnings         : " + hotel.getEarnings() + "\n";
 
         
         return result;
@@ -78,12 +78,12 @@ public class ReservationSystem {
         }
 
         result += "Available Rooms : " + totalAvailable + "\n";
-        result += "\tStandard Rooms : " + available.get(0) + "\n";
-        result += "\tDeluxe Rooms : " + available.get(1) + "\n";
+        result += "\tStandard Rooms  : " + available.get(0) + "\n";
+        result += "\tDeluxe Rooms     : " + available.get(1) + "\n";
         result += "\tExecutive Rooms : " + available.get(2) + "\n";
-        result += "Booked Rooms : " + totalBooked + "\n";
-        result += "\tStandard Rooms : " + booked.get(0) + "\n";
-        result += "\tDeluxe Rooms : " + booked.get(1) + "\n";
+        result += "Booked Rooms   : " + totalBooked + "\n";
+        result += "\tStandard Rooms  : " + booked.get(0) + "\n";
+        result += "\tDeluxe Rooms     : " + booked.get(1) + "\n";
         result += "\tExecutive Rooms : " + booked.get(2) + "\n";
         
         return result;
