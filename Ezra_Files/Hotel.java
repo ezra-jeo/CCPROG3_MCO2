@@ -153,7 +153,7 @@ public class Hotel {
      * @param checkOutDate the ending date to consider the availability of the room object.
      * @return true if the given room is available within the given range and false otherwise.
      */
-    public boolean checkAvailability(Room room, int checkInDate, int checkOutDate) {
+    private boolean checkAvailability(Room room, int checkInDate, int checkOutDate) {
         boolean available = true;
         int i = checkInDate - 1;
 
@@ -166,6 +166,17 @@ public class Hotel {
         }
 
         return available;
+    }
+
+    /**
+     * Checks if the given room is available for the whole month.
+     * Pre-condition: the room is an existing room in the hotel.
+     * 
+     * @param room the room object to be checked whether is available or not.
+     * @return true if the given room is available within the month and false otherwise.
+     */
+    public boolean checkRoomAvailability(int index) {
+        return checkAvailability(this.roomList.get(index), Room.MIN_DATE, Room.MAX_DATE);
     }
 
     /**
@@ -188,6 +199,27 @@ public class Hotel {
 
         return available;
     }
+
+    /**
+     * Checks whether there are existing reservations for any rooms on the date specified.
+     * Pre-condition: the date is within the range of minimum and maximum dates.
+     * 
+     * @param date date to change price rate.
+     * @return true if all rooms are available and false otherwise.
+     */
+    
+    public boolean checkDateAvailability(int date) {
+        boolean available = true;
+
+        for (Room room : this.roomList) {
+            if (!room.getAvailability().get(date-1)) {
+                available = false;
+            }
+        }
+
+        return available;
+    }
+
 
     /**
      * Checks the availability of all the rooms in the hotel object within the entire month.
@@ -367,11 +399,11 @@ public class Hotel {
             room = this.roomList.get(i);
 
             if (checkAvailability(room, checkInDate, checkOutDate)) {
-                if (roomType.equalsIgnoreCase("Standard") && room instanceof StandardRoom)
+                if (roomType.equalsIgnoreCase("Standard Room") && room instanceof StandardRoom)
                     available = true;
-                else if (roomType.equalsIgnoreCase("Deluxe") && room instanceof DeluxeRoom)
+                else if (roomType.equalsIgnoreCase("Deluxe Room") && room instanceof DeluxeRoom)
                     available = true;
-                else if (roomType.equalsIgnoreCase("Execute") && room instanceof ExecutiveRoom)
+                else if (roomType.equalsIgnoreCase("Executive Room") && room instanceof ExecutiveRoom)
                     available = true;
             }
 
@@ -525,21 +557,26 @@ public class Hotel {
         String roomInfo;
         ArrayList<Boolean> availability;
         boolean available = false;
-        int i;
+        int i = 0;
+        int ctr = 0;
 
-        roomInfo = "Room Name : " + room.getName();
-        roomInfo += "\n\nPrice per Night : ";
+        roomInfo = "\nHotel Room Name    : " + room.getName();
+        roomInfo += "\n\n+----+ Price Per Night +----+";
 
-        for (i = Room.MIN_DATE; i < Room.MAX_DATE; i++)
-            roomInfo += "\nDay " + i + " to " + (i + 1) + " -> " + room.getPrice(i);
-        
-        roomInfo += "\n\nAvailability : ";
+        for (i = Room.MIN_DATE; i < Room.MAX_DATE; i++) {
+            roomInfo += "\nDay ";
+            roomInfo += String.format("%-2d", i) + " -- to -- ";
+            roomInfo += String.format("%-2d", i+1) + " : " + String.format("%.2f", room.getPrice(i));
+        }
+
+        roomInfo += "\n\n+----+ Available Day/s +----+\n";
 
         availability = room.getAvailability();
-            
+
+        i = 0;
         // Checks if there is an available date.
         while (i < availability.size() && !available) {
-            if (availability.get(index) == true)
+            if (availability.get(i))
                 available = true;
 
             i++;
@@ -548,8 +585,16 @@ public class Hotel {
         if (available) {
             // Loops through the list of availability of the room and stores the available dates.
             for (i = 0; i < availability.size(); i++) {
-                if (availability.get(i))
-                    roomInfo += (i+1) + ", ";
+                if (availability.get(i)) {
+                    roomInfo += String.format("%-2d", (i+1)) + " * ";
+                    ctr++;
+
+                    if (ctr == 6) {
+                        roomInfo += "\n";
+                        ctr = 0;
+                    }
+
+                }
             }
 
             roomInfo += "\b\b ";
@@ -574,25 +619,29 @@ public class Hotel {
         int i;
         int ctr = 0;
 
-        reservationInfo = "\nGuest Information : " + reservation.getGuestName();
-        reservationInfo += "\nRoom Name : " + reservation.getRoom().getName();
-        reservationInfo += "\nCheck-In Date : " + reservation.getCheckInDate();
-        reservationInfo += "\nCheck-Out Date : " + reservation.getCheckOutDate();
-        reservationInfo += "\nDiscount Code : ";
+        reservationInfo = "\nGuest Information  : " + reservation.getGuestName();
+        reservationInfo += "\nHotel Room Name    : " + reservation.getRoom().getName();
+        reservationInfo += "\nCheck-In Date      : " + reservation.getCheckInDate();
+        reservationInfo += "\nCheck-Out Date     : " + reservation.getCheckOutDate();
+        reservationInfo += "\nDiscount Code      : ";
 
         if (reservation.getDiscountCode() == null)
             reservationInfo += "N/A";
         else
             reservationInfo += reservation.getDiscountCode();
 
-        reservationInfo += "\n\nPrice Breakdown : ";
+        reservationInfo += "\n\n+----+ Price Breakdown +----+";
 
         for (i = reservation.getCheckInDate(); i < reservation.getCheckOutDate(); i++) {
-            reservationInfo = "\nDay " + i + " to " + (i + 1) + " -> " + priceBreakdown.get(ctr);
+            reservationInfo += "\nDay ";
+            reservationInfo += String.format("%-2d", i) +  " -- to -- ";
+            reservationInfo += String.format("%-2d", i+1) + " : " + String.format("%.2f", priceBreakdown.get(ctr));
             ctr++;
         }
 
-        reservationInfo += "\n\nTotal Price : " + reservation.getTotalPrice();
+        reservationInfo += "\nDiscount Amount    : " + String.format("%.2f", reservation.getDiscountAmount());
+        reservationInfo += "\n- - - - - - - - - - - - - - -";
+        reservationInfo += "\nTotal Price Amount : " + String.format("%.2f", reservation.getTotalPrice());
 
         return reservationInfo;
     }
