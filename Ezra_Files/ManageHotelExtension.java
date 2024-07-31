@@ -306,11 +306,12 @@ public class ManageHotelExtension {
 
         // Text area for price rate
         JPanel modifyPriceRateTextAreaPane = new JPanel(new BorderLayout());
-        modifyPriceRateTextAreaPane.setPreferredSize(new Dimension(250, 450));
+        modifyPriceRateTextAreaPane.setPreferredSize(new Dimension(250, 390));
         JLabel modifyPriceRateTitle = new JLabel("Price Rate Per Date: ");
-        modifyPriceRateTitle.setPreferredSize(new Dimension(250, 100));
+        modifyPriceRateTitle.setPreferredSize(new Dimension(250, 60));
         modifyPriceRateTitle.setHorizontalAlignment(JLabel.CENTER);
         this.priceRate = new JTextArea();
+        this.priceRate.setPreferredSize(new Dimension(250,  50));
         modifyPriceRateTextAreaPane.add(modifyPriceRateTitle, BorderLayout.NORTH);
         modifyPriceRateTextAreaPane.add(this.priceRate, BorderLayout.CENTER);
 
