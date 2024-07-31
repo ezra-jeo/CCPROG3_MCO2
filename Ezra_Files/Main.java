@@ -13,7 +13,7 @@ public class Main {
      */
     public static void main(String[] args) {
         ReservationSystem rs = new ReservationSystem();
-        ReservationSystemView view = new ReservationSystemView();
+        ReservationSystemView view = new ReservationSystemView();   
         ViewHotelExtension viewHotel = new ViewHotelExtension();
         ManageHotelExtension manageHotel = new ManageHotelExtension();
         ReservationSystemController controller = new ReservationSystemController(rs, view, viewHotel, manageHotel);

@@ -395,7 +395,7 @@ public class ReservationSystemView {
     /**
      * Add options to each combobox in every section in the main window.
      * 
-     * @param item 
+     * @param item String to add as option
      */
     public void addHotelOption(String item) {
         DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) this.hotelOptions.getModel();
@@ -410,6 +410,7 @@ public class ReservationSystemView {
     /**
      * Updates the options of each combobox in every section in the main window.
      * 
+     * @param items array list of rooms of the hotel
      */
     public void updateHotelOptions(ArrayList<Hotel> items) {
         
@@ -468,7 +469,7 @@ public class ReservationSystemView {
     /**
      * Adds manage hotel item listener
      * 
-     * @param actionListener item listener instance
+     * @param itemListener item listener instance
      */
     public void setManageHotelItemListener(ItemListener itemListener) {
         this.manageOptions.addItemListener(itemListener);

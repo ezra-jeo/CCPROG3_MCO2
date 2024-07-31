@@ -417,7 +417,7 @@ public class ReservationSystemController {
                 String discountCode = view.getDiscountCode().getText(); // Discount code, if any
 
 
-                if (hotelIndex != -1 && dateIn != -1 && dateOut != -1 && !guestName.equals("") && dateIn < dateOut) {
+                if (hotelIndex != -1 && dateIn != -1 && dateOut != -1 && !guestName.equals("") && roomType != null && dateIn < dateOut) {
                     Hotel hotel = reservationSystem.getHotelList().get(hotelIndex); // Hotel instance
                     int roomIndex = hotel.getAvailableRoomType(roomType, dateIn, dateOut); // room index, auto generated
 
@@ -458,8 +458,8 @@ public class ReservationSystemController {
                 else if (guestName.equals("")) {
                     view.setErrorFeedback("Enter a valid guest name");
                 }
-                else if (hotelIndex == -1) {
-                    view.setErrorFeedback("Select a Hotel.");
+                else if (roomType == null) {
+                    view.setErrorFeedback("Select a room type.");
                 }
                 else if (dateIn == -1) {
                     view.setErrorFeedback("Select a valid check in date.");
