@@ -306,19 +306,18 @@ public class ViewHotelExtension {
      * @param items array list of reservations of the hotel
      */
     public void updateReservationOptions(ArrayList<Reservation> items) {
-        if (items.size() > 0) {
-            String result;
-            DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) this.reservationOptions.getModel();
+        String result;
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) this.reservationOptions.getModel();
 
-            model.removeAllElements();
-            for (Reservation reservation : items) {
-                result = reservation.getRoom().getName() + ": ";
-                result += "In: " + reservation.getCheckInDate() + " --> Out: " + reservation.getCheckOutDate() + " ";
-                result += "Guest: \"" + reservation.getGuestName() + "\"";
-                model.addElement(result);
-            }
-            model.setSelectedItem(null);
+        model.removeAllElements();
+        for (Reservation reservation : items) {
+            result = reservation.getRoom().getName() + ": ";
+            result += "In: " + reservation.getCheckInDate() + " --> Out: " + reservation.getCheckOutDate() + " ";
+            result += "Guest: \"" + reservation.getGuestName() + "\"";
+            model.addElement(result);
         }
+        model.setSelectedItem(null);
+    
     }
 
     /**
