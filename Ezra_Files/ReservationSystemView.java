@@ -18,7 +18,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-
+/**
+ * The ReservationSystemView class fulfills the view role in the MVC architecture.
+ * It is responsible for the user interface that is used to provided input and give output to the users.
+ * 
+ */
 public class ReservationSystemView {
     /**
      * GUI Elements
@@ -600,7 +604,7 @@ public class ReservationSystemView {
     /**
      * Getter for hotel options combobox for view hotel
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getHotelOptions() {
         return this.hotelOptions;
@@ -609,7 +613,7 @@ public class ReservationSystemView {
     /**
      * Getter for hotel options combobox for manage hotel
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getManageOptions() {
         return this.manageOptions;
@@ -618,7 +622,7 @@ public class ReservationSystemView {
     /**
      * Getter for hotel options combobox for simulate booking
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getSimulateHotelOptions() {
         return this.simulateHotelOptions;
@@ -627,7 +631,7 @@ public class ReservationSystemView {
     /**
      * Getter for room options combobox for simulate booking
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getSimulateRoomOptions() {
         return this.simulateRoomOptions;
@@ -636,7 +640,7 @@ public class ReservationSystemView {
     /**
      * Getter for check in date options combobox for simulate booking
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getSimulateDateInOptions() {
         return this.simulateDateInOptions;
@@ -645,7 +649,7 @@ public class ReservationSystemView {
     /**
      * Getter for check out date options combobox for simulate booking
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getSimulateDateOutOptions() {
         return this.simulateDateOutOptions;

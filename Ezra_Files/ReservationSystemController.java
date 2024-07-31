@@ -4,6 +4,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 
+/**
+ * The ReservationSystemController class fulfills the controller role in the MVC architecture.
+ * It bridges the view elements to the model elements running the corresponding validity checking and commands 
+ * depending on the view input.
+ * 
+ */
+
 public class ReservationSystemController {
 
     private ReservationSystem reservationSystem;

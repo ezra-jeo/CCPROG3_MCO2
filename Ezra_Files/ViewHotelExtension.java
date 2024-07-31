@@ -14,7 +14,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
-
+/**
+ * The ViewHotelExtension class provides an extension for the view hotel portion of the ReservationSystemView class
+ * 
+ */
 public class ViewHotelExtension {
     // GUI Elements
     private JFrame mainFrame;
@@ -357,7 +360,7 @@ public class ViewHotelExtension {
     /**
      * Returns the room options
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getRoomOptions() {
         return this.roomOptions;
@@ -366,7 +369,7 @@ public class ViewHotelExtension {
     /**
      * Returns the date options
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getDateOptions() {
         return this.dateOptions;
@@ -375,7 +378,7 @@ public class ViewHotelExtension {
     /**
      * Returns the reservation options
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getReservationOptions() {
         return this.reservationOptions;

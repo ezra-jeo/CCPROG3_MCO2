@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * The ReservationSystem class represents the main reservation system in the hotel reservation system.
+ * The ReservationSystem class represents the model for the reservation system with regards to the MVC architecture.
  * It contains a collection of hotels through which a user can reserve/book a room.
  */
 public class ReservationSystem {
@@ -23,7 +23,8 @@ public class ReservationSystem {
     /**
      * Creates a hotel instance with a given name and adds the it to the hotel list.
      * 
-     * @param name the name of the hotel that is being created.
+     * @param name the name of the hotel that is being created
+     * @param roomNum the arraylist of integers containing the room numbers for standard, deluxe, and executive room types
      */
     public void createHotel(String name, ArrayList<Integer> roomNum) {  
 

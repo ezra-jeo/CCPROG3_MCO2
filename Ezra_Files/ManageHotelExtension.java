@@ -16,6 +16,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * The ManageHotelExtension class provides an extension for the manage hotel portion of the ReservationSystemView class
+ * 
+ * 
+ */
 public class ManageHotelExtension {
     // GUI Elements
     private JFrame mainFrame;
@@ -639,7 +644,7 @@ public class ManageHotelExtension {
     /**
      * Returns the remove room options
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getRemoveRoomOptions() {
         return this.removeRoomOptions;
@@ -648,7 +653,7 @@ public class ManageHotelExtension {
     /**
      * Returns the date options
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getDateOptions() {
         return this.dateOptions;
@@ -657,7 +662,7 @@ public class ManageHotelExtension {
     /**
      * Returns the remove reservation options
      * 
-     * @return JComboBox<String> instance
+     * @return JComboBox instance
      */
     public JComboBox<String> getRemoveReservationOptions() {
         return this.removeReservationOptions;
