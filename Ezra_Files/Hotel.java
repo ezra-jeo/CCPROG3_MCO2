@@ -659,6 +659,32 @@ public class Hotel {
     }
 
     /**
+     * Gets the price rate information for all the days across the entire month under the hotel object.
+     * 
+     * @return the string price rate information.
+     */
+    public String getPriceRateInfo() {
+        String priceRateInfo;
+        int i;
+        
+        priceRateInfo = "Hotel Name : " + this.name;
+        priceRateInfo += "\n\n+---------------------+ Price Rates +---------------------+\n";
+
+        for (i = Room.MIN_DATE; i < Room.MAX_DATE; i++) {
+            if (i % 2 == 1)
+                priceRateInfo += "\n   ";
+            else
+                priceRateInfo += "      ";
+
+            priceRateInfo += "Day ";
+            priceRateInfo += String.format("%02d", i) + " -- to -- ";
+            priceRateInfo += String.format("%02d", i+1) + " : " + String.format("%6.2f", this.roomPriceRate.get(i-1) * 100) + "%";
+        }
+
+        return priceRateInfo;
+    }
+
+    /**
      * Returns the name of the hotel object.
      * 
      * @return the name of the hotel.
