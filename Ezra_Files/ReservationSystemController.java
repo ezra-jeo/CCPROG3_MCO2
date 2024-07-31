@@ -241,7 +241,6 @@ public class ReservationSystemController {
                 else {
                     manageHotel.setErrorFeedback("Hotel \"" + newName + "\" already exists.");
                 }
-            
             }
         });
 
