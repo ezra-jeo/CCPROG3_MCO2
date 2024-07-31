@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -26,6 +28,7 @@ public class ManageHotelExtension {
     private JFrame mainFrame;
     private JPanel renameHotelPanel, addRoomPanel, removeRoomPanel, updateBasePricePanel, modifyPriceRatePanel, removeReservationPanel, removeHotelPanel;
     private JTextField hotelNewName, standardRoomNum, deluxeRoomNum, executiveRoomNum, newBasePrice, newPriceRate;
+    private JTextArea priceRate;
     private JButton renameHotel, addRoom, removeRoom, updateBasePrice, modifyPriceRate, removeReservation, removeHotel;
     private JComboBox<String> removeRoomOptions, dateOptions, removeReservationOptions;
     private JTabbedPane menu;
@@ -291,7 +294,7 @@ public class ManageHotelExtension {
         
         // New price rate input
         JPanel modifyPriceRateInputPane = new JPanel(new FlowLayout());
-        modifyPriceRateInputPane.setPreferredSize(new Dimension(250, 50));
+        modifyPriceRateInputPane.setPreferredSize(new Dimension(250, 450));
         JLabel modifyPriceRatePrompt = new JLabel("Enter the new price rate for the date (in %): ");
         modifyPriceRatePrompt.setPreferredSize(new Dimension(250, 100));
         this.newPriceRate = new JTextField();
@@ -301,9 +304,21 @@ public class ManageHotelExtension {
         modifyPriceRateInputPane.add(this.newPriceRate);
         modifyPriceRateInputPane.add(this.modifyPriceRate);
 
+        // Text area for price rate
+        JPanel modifyPriceRateTextAreaPane = new JPanel(new BorderLayout());
+        modifyPriceRateTextAreaPane.setPreferredSize(new Dimension(250, 450));
+        JLabel modifyPriceRateTitle = new JLabel("Price Rate Per Date: ");
+        modifyPriceRateTitle.setPreferredSize(new Dimension(250, 100));
+        modifyPriceRateTitle.setHorizontalAlignment(JLabel.CENTER);
+        this.priceRate = new JTextArea();
+        modifyPriceRateTextAreaPane.add(modifyPriceRateTitle, BorderLayout.NORTH);
+        modifyPriceRateTextAreaPane.add(this.priceRate, BorderLayout.CENTER);
+
         // Add to pane
         modifyPriceRatePane.add(modifyPriceRateOptionsPane, BorderLayout.NORTH);
         modifyPriceRatePane.add(modifyPriceRateInputPane, BorderLayout.CENTER);
+        modifyPriceRatePane.add(modifyPriceRateTextAreaPane, BorderLayout.SOUTH);
+
 
         // Add pane to panel
         this.modifyPriceRatePanel.add(header, BorderLayout.NORTH);
@@ -516,7 +531,24 @@ public class ManageHotelExtension {
     public void setModifyPriceRateListener(ActionListener actionListener) {
         this.modifyPriceRate.addActionListener(actionListener);
     }
+    
+    /**
+     * Adds an modify price rate action listener
+     * 
+     * @param actionListener action listener instance
+     */
+    public void setModifyPriceRateDateItemListener(ItemListener itemListener) {
+        this.dateOptions.addItemListener(itemListener);
+    }
 
+    /**
+     * Sets the text area for price rate information
+     * 
+     * @param message text to display
+     */
+    public void setPriceRateInformation(String message) {
+        this.priceRate.setText(message);
+    }
     /**
      * Adds an remove reservation action listener
      * 

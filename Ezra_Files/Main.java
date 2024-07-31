@@ -3,6 +3,8 @@
  * 
  * @author Ethan Axl S. Burayag
  * @author Ezra Jeonadab G. Del Rosario
+ * 
+ * The design of the user interface is recommended for Mac devices
  */
 public class Main {
 

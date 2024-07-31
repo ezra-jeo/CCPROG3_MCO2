@@ -48,7 +48,7 @@ public class ReservationSystem {
         result += "No. of Standard Rooms  : " + hotel.getStandardRoomList().size() + "\n"; 
         result += "No. of Deluxe Rooms     : " + hotel.getDeluxeRoomList().size() + "\n";
         result += "No. of Executive Rooms : " + hotel.getExecutiveRoomList().size() + "\n";
-        result += "Estimated Earnings         : " + hotel.getEarnings() + "\n";
+        result += "Estimated Earnings         : " + String.format("%.2f", hotel.getEarnings()) + "\n";
 
         
         return result;
