@@ -25,26 +25,26 @@ public class ReservationSystem {
      * 
      * @param name the name of the hotel that is being created.
      */
-    public boolean createHotel(String name, ArrayList<Integer> roomNum) {  
+    public void createHotel(String name, ArrayList<Integer> roomNum) {  
 
         Hotel hotel = new Hotel(name, roomNum);
         this.hotelList.add(hotel);
 
-        return true;
     }
 
     /**
-     * Displays high level and low level information of a hotel. 
+     * Returns a string containing high level information of a hotel. 
      * Pre-condition: the hotel index provided exists based from the hotel list and is valid.
      * 
-     * @param index the index of the hotel in the hotelList.
+     * @param index the index of the hotel in the hotelList
+     * @return string containing the information
      */
     public String viewHotelHighLevel(int index) {
         String result = "";
         Hotel hotel = hotelList.get(index);
 
         result += "Hotel Name                    : " + hotel.getName() + "\n";
-        result += "No. of Standard Rooms  : " + hotel.getStandardRoomList().size() + "\n"; // Get Standard Room List TODO
+        result += "No. of Standard Rooms  : " + hotel.getStandardRoomList().size() + "\n"; 
         result += "No. of Deluxe Rooms     : " + hotel.getDeluxeRoomList().size() + "\n";
         result += "No. of Executive Rooms : " + hotel.getExecutiveRoomList().size() + "\n";
         result += "Estimated Earnings         : " + hotel.getEarnings() + "\n";
@@ -53,6 +53,15 @@ public class ReservationSystem {
         return result;
     }
 
+    /**
+     * Returns a string containing the available and booked rooms of a hotel. 
+     * Pre-condition: the hotel index provided exists based from the hotel list and is valid. The date is within the range of minimum
+     * and maximum dates possible.
+     * 
+     * @param index the index of the hotel in the hotelList
+     * @param date the date whose information to display
+     * @return string containing the information
+     */
     public String viewHotelAvailableBooked(int index, int date) {
         String result = "";
         Hotel hotel = hotelList.get(index);
@@ -81,6 +90,15 @@ public class ReservationSystem {
         return result;
     }
 
+    /**
+     * Returns a string containing the room information.
+     * Pre-condition: the hotel index provided exists based from the hotel list and is valid. The reservation index is based from 
+     * the reservation list and is valid
+     * 
+     * @param index the index of the hotel in the hotelList
+     * @param roomName the name of the room whose information to display
+     * @return string containing the information
+     */
     public String viewHotelRoomInfo(int index, String roomName) {
         String result = "";
         Hotel hotel = hotelList.get(index);
@@ -90,6 +108,15 @@ public class ReservationSystem {
         return result;
     }
 
+    /**
+     * Returns a string containing the reservation information.
+     * Pre-condition: the hotel index provided exists based from the hotel list and is valid. The reservation index is based from 
+     * the reservation list and is valid
+     * 
+     * @param index the index of the hotel in the hotelList
+     * @param reservationIndex the index of the reservation whose information to display
+     * @return string containing the information
+     */
     public String viewHotelReservationInfo(int index, int reservationIndex) {
         String result = "";
         Hotel hotel = hotelList.get(index);
@@ -101,10 +128,11 @@ public class ReservationSystem {
     }
 
     /**
-     * Prompts the user to rename a given hotel.
-     * Pre-condition: the hotel index provided exists based from the hotel list and is valid.
+     * Sets the name of a hotel given a new name
+     * Pre-condition: the hotel index provided exists based from the hotel list and is valid. The new name provided is unique.
      * 
-     * @param index the index of the hotel in the hotelList.
+     * @param index the index of the hotel in the hotelList
+     * @param newName the new name to replace the original
      */
     public void renameHotel(int index, String newName) {
         // Assume index is valid.
@@ -147,7 +175,7 @@ public class ReservationSystem {
     /**
      * Returns the hotel list as an arraylist.
      * 
-     * @return hotelList, arraylist containing the hotels in the system.
+     * @return arraylist containing the hotels in the system.
      */
     public ArrayList<Hotel> getHotelList() {
         return this.hotelList;
